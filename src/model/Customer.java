@@ -1,13 +1,49 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
 /**
  *
- * @author ayush
+ * @author Ayush
  */
-public class Customer {
-    
+
+public class Customer extends User {
+    private int points;
+    private CustomerStatus status;
+
+    public Customer(String username, String password) {
+        super(username, password);
+        this.points = 0;
+        this.status = new SilverStatus(); // always starts at silver
+    }
+
+    public int getPoints() { return points; }
+
+    public void addPoints(int pts) {
+        this.points += pts;
+        status.upgrade(this); // check if should upgrade after adding points
+    }
+
+    // returns how much customer actually pays after redeeming points
+    // every 100 pts = $1 off, cost cannot go below $0
+    public double redeemPoints(double cost) {
+        int pointsWorth = points / 100;
+        double discount = Math.min(pointsWorth, (int) cost);
+        int pointsUsed = (int) discount * 100;
+        this.points -= pointsUsed;
+        double newCost = cost - discount;
+        status.downgrade(this); // check if should downgrade after redeeming
+        return newCost;
+    }
+
+    public CustomerStatus getStatus() { return status; }
+    public void setStatus(CustomerStatus s) { this.status = s; }
+
+    public void updateStatus() {
+        status.upgrade(this);
+        status.downgrade(this);
+    }
+
+    @Override
+    public String toString() {
+        return username + "," + password + "," + points;
+    }
 }

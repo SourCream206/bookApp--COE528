@@ -1,13 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
 /**
  *
- * @author ayush
+ * @author Ayush
  */
-public class CustomerStatus {
-    
+
+public interface CustomerStatus {
+    String getStatusName();
+    double getDiscount(double cost);
+    int getPointsMultiplier();
+    void upgrade(Customer c);
+    void downgrade(Customer c);
 }

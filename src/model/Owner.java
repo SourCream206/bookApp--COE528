@@ -1,13 +1,27 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
+
 
 /**
  *
- * @author ayush
+ * @author gurleen
  */
-public class Owner {
+
+// Owner is admin of Bookstore app
+// Only one owner, hence using Singleton pattern (only one owner can be created)
+
+
+public class Owner extends User {
     
+    private static Owner instance;
+    
+    private Owner() {
+        super("admin", "admin");
+    }
+    
+    public static Owner getInstance() {
+        if (instance == null) {
+            instance = new Owner();
+        }
+        return instance;
+    }
 }
