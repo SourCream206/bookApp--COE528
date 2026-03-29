@@ -1,7 +1,3 @@
-/**
- *
- * @author Ayush
- */
 package model;
 
 public class TestModel {
@@ -10,58 +6,60 @@ public class TestModel {
         BookStore store = BookStore.getInstance();
         
         // --- test adding books ---
-        store.addBook("Java Programming", 50.0);
-        store.addBook("Data Structures", 100.0);
-        store.addBook("Algorithms", 200.0);
-        store.addBook("Operating Systems", 500.0);
-        System.out.println("Books added: " + store.getBooks().size()); // should print 4
+        store.addBook("COE428", 50.0);
+        store.addBook("COE528", 100.0);
+        store.addBook("MTH314", 200.0);
+        store.addBook("ELE404", 500.0);
+        store.addBook("CMN432", 75.0);
+        System.out.println("Books added: " + store.getBooks().size()); // should print 5
         
         // --- test adding customers ---
-        store.addCustomer("jane", "pass123");
+        store.addCustomer("ayush", "pass123");
         System.out.println("Customers added: " + store.getCustomers().size()); // should print 1
         
         // --- test authentication ---
-        System.out.println(store.authenticate("admin", "admin")); // should not be null
-        System.out.println(store.authenticate("jane", "pass123")); // should not be null
-        System.out.println(store.authenticate("jane", "wrongpass")); // should print null
+        User owner = store.authenticate("admin", "admin");
+        System.out.println("Owner login: " + (owner != null ? "SUCCESS" : "FAILED")); // SUCCESS
+        User customer = store.authenticate("ayush", "pass123");
+        System.out.println("Customer login: " + (customer != null ? "SUCCESS" : "FAILED")); // SUCCESS
+        User bad = store.authenticate("ayush", "wrongpass");
+        System.out.println("Bad login: " + (bad != null ? "SUCCESS" : "FAILED")); // FAILED
         
-        // --- test points and status (from project example) ---
-        Customer jane = (Customer) store.authenticate("jane", "pass123");
-        System.out.println("Status: " + jane.getStatus().getStatusName()); // Silver
-        System.out.println("Points: " + jane.getPoints()); // 0
+        // --- test points and status (using project spec example numbers) ---
+        Customer ayush = (Customer) store.authenticate("ayush", "pass123");
+        System.out.println("Initial Status: " + ayush.getStatus().getStatusName()); // Silver
+        System.out.println("Initial Points: " + ayush.getPoints()); // 0
         
-        // buy books worth $700 (200 + 500)
+        // buy ELE404 + MTH314 = $700 to match project example
         double cost1 = 700.0;
-        jane.addPoints((int)(cost1 * jane.getStatus().getPointsMultiplier()));
-        System.out.println("Points after $700 purchase: " + jane.getPoints()); // 7000
-        System.out.println("Status: " + jane.getStatus().getStatusName()); // Gold
+        ayush.addPoints((int)(cost1 * ayush.getStatus().getPointsMultiplier()));
+        System.out.println("Points after $700 purchase: " + ayush.getPoints()); // 7000
+        System.out.println("Status (should be Gold): " + ayush.getStatus().getStatusName()); // Gold
         
-        // redeem points, buy $50 book
-        double cost2 = jane.redeemPoints(50.0);
-        System.out.println("Cost after redeem (should be 0): " + cost2); // 0
-        System.out.println("Points remaining (should be 2000): " + jane.getPoints()); // 2000
+        // redeem points, buy COE428 ($50)
+        double cost2 = ayush.redeemPoints(50.0);
+        ayush.addPoints((int)(cost2 * ayush.getStatus().getPointsMultiplier()));
+        System.out.println("Cost after redeem (should be 0.0): " + cost2); // 0.0
+        System.out.println("Points remaining (should be 2000): " + ayush.getPoints()); // 2000
+        System.out.println("Status (should be Gold): " + ayush.getStatus().getStatusName()); // Gold
         
-        // redeem points, buy $100 book
-        double cost3 = jane.redeemPoints(100.0);
-        System.out.println("Cost after redeem (should be 80): " + cost3); // 80
-        System.out.println("Points remaining (should be 800): " + jane.getPoints()); // 800
-        System.out.println("Status (should be Silver): " + jane.getStatus().getStatusName()); // Silver
+        // redeem points, buy COE528 ($100)
+        double cost3 = ayush.redeemPoints(100.0);
+        ayush.addPoints((int)(cost3 * ayush.getStatus().getPointsMultiplier()));
+        System.out.println("Cost after redeem (should be 80.0): " + cost3); // 80.0
+        System.out.println("Points remaining (should be 800): " + ayush.getPoints()); // 800
+        System.out.println("Status (should be Silver): " + ayush.getStatus().getStatusName()); // Silver
         
         // --- test save and load ---
         store.saveToFiles();
         System.out.println("Saved to files successfully");
         
-        // reset and reload
-        store.saveToFiles();
-        System.out.println("Saved to files successfully");
-
-        // clear and reload to simulate restart
         store.getBooks().clear();
         store.getCustomers().clear();
         store.loadFromFiles();
-        System.out.println("Books loaded after reload: " + store.getBooks().size()); // should be 4
-        System.out.println("Customers loaded after reload: " + store.getCustomers().size()); // should be 1
-
+        System.out.println("Books loaded after reload: " + store.getBooks().size()); // 5
+        System.out.println("Customers loaded after reload: " + store.getCustomers().size()); // 1
+        
         System.out.println("All tests done!");
     }
 }

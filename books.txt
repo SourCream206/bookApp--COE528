@@ -1,4 +1,5 @@
-Java Programming,50.0
-Data Structures,100.0
-Algorithms,200.0
-Operating Systems,500.0
+COE428,50.0
+COE528,100.0
+MTH314,200.0
+ELE404,500.0
+CMN432,75.0

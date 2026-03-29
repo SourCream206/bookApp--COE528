@@ -25,15 +25,20 @@ public class Customer extends User {
     // returns how much customer actually pays after redeeming points
     // every 100 pts = $1 off, cost cannot go below $0
     public double redeemPoints(double cost) {
-        int pointsWorth = points / 100;
-        double discount = Math.min(pointsWorth, (int) cost);
-        int pointsUsed = (int) discount * 100;
+        // max dollars we can discount based on points (100 pts = $1)
+        double maxDiscount = points / 100.0;
+
+        // can't discount more than the total cost
+        double discount = Math.min(maxDiscount, cost);
+
+        // deduct only the points actually used
+        int pointsUsed = (int)(discount * 100);
         this.points -= pointsUsed;
+
         double newCost = cost - discount;
-        status.downgrade(this); // check if should downgrade after redeeming
+        status.downgrade(this);
         return newCost;
     }
-
     public CustomerStatus getStatus() { return status; }
     public void setStatus(CustomerStatus s) { this.status = s; }
 
