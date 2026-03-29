@@ -1,0 +1,4 @@
+Java Programming,50.0
+Data Structures,100.0
+Algorithms,200.0
+Operating Systems,500.0
