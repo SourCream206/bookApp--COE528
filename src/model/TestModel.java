@@ -58,7 +58,7 @@ public class TestModel {
         store.getCustomers().clear();
         store.loadFromFiles();
         System.out.println("Books loaded after reload: " + store.getBooks().size()); // 5
-        System.out.println("Customers loaded after reload: " + store.getCustomers().size()); // 1
+        System.out.println("Customers loaded after reload: " + store.getCustomers().size()); // ONE
         
         System.out.println("All tests done!");
     }
